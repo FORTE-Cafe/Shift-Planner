@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مدیریت شیفت‌ها</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>مدیریت شیفت‌ها</h1>
+    <p class="subtitle">شیفت‌ها را با کشیدن گزینه‌ها به خانه‌های جدول تنظیم کنید.</p>
+
+    <section class="panel" aria-label="افزودن پرسنل و انتخاب شیفت">
+      <form id="add-form" style="display: contents">
+        <input id="name-input" type="text" placeholder="نام و نام خانوادگی" maxlength="80" required>
+        <button type="submit">افزودن پرسنل</button>
+      </form>
+
+      <button class="export" id="export-button" type="button">خروجی تصویر</button>
+      <button class="qr-button" id="open-qr-button" type="button">ساخت QR Code</button>
+
+      <div class="shift-options">
+        <span class="options-label">گزینه‌های شیفت (قابل کشیدن):</span>
+        <span class="shift-token morning" draggable="true" data-shift="صبح">صبح</span>
+        <span class="shift-token mid" draggable="true" data-shift="وسط">وسط</span>
+        <span class="shift-token evening" draggable="true" data-shift="عصر">عصر</span>
+        <span class="shift-token off" draggable="true" data-shift="OFF">OFF</span>
+        <span class="options-label">یا برای تغییر شیفت، روی خانه کلیک کنید.</span>
+      </div>
+    </section>
+
+    <div class="table-wrap" id="table-wrap">
+      <table id="shift-table"></table>
+    </div>
+
+    <p class="note">اطلاعات در همین مرورگر ذخیره می‌شود. برای استفاده از QR Code، ابتدا تصویر را در دسترس عموم قرار دهید و نشانی آن را وارد کنید.</p>
+  </main>
+
+  <dialog id="qr-dialog">
+    <h2>ساخت QR Code برای تصویر</h2>
+    <p>نشانی عمومی تصویر جدول را وارد کنید. دستگاهی که کد را اسکن می‌کند باید بتواند به این نشانی دسترسی داشته باشد.</p>
+    <form id="qr-form">
+      <input id="image-url" type="url" placeholder="https://example.com/جدول-شیفت‌ها.png" required>
+      <div class="dialog-actions">
+        <button type="submit">ساخت QR Code</button>
+        <button type="button" class="secondary" id="close-qr-button">بستن</button>
+      </div>
+    </form>
+    <div id="qr-error" role="status"></div>
+    <div id="qr-result">
+      <canvas id="qr-canvas"></canvas>
+      <button type="button" class="export" id="download-qr-button">دانلود تصویر QR</button>
+    </div>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.4/qrcode.min.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
