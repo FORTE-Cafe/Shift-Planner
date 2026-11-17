@@ -43,14 +43,15 @@
 
   <dialog id="qr-dialog">
     <h2>ساخت QR Code برای تصویر</h2>
-    <p>نشانی عمومی تصویر جدول را وارد کنید. دستگاهی که کد را اسکن می‌کند باید بتواند به این نشانی دسترسی داشته باشد.</p>
+    <p>تصویر جدول آپلود می‌شود و QR Code آن ساخته خواهد شد.</p>
+    
     <form id="qr-form">
-      <input id="image-url" type="url" placeholder="https://example.com/جدول-شیفت‌ها.png" required>
-      <div class="dialog-actions">
+        <div class="dialog-actions">
         <button type="submit">ساخت QR Code</button>
         <button type="button" class="secondary" id="close-qr-button">بستن</button>
-      </div>
+        </div>
     </form>
+
     <div id="qr-error" role="status"></div>
     <div id="qr-result">
       <canvas id="qr-canvas"></canvas>

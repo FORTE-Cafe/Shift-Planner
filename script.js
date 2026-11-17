@@ -1,6 +1,8 @@
 const days = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
 const shifts = ["", "صبح", "وسط", "عصر", "OFF"];
 const storageKey = "shift-manager-fa-v3";
+const A_K = "19c6c80cbb02685447d4cbfd17567d7b";
+
 
 let staff = loadStaff();
 
@@ -216,30 +218,68 @@ qrForm.addEventListener("submit", async event => {
     qrError.textContent = "";
     qrResult.style.display = "none";
 
-    if (typeof QRCode === "undefined") {
-    qrError.textContent = "ابزار ساخت QR Code بارگذاری نشد. اتصال اینترنت را بررسی کنید.";
-    return;
+    if (typeof html2canvas === "undefined" || typeof QRCode === "undefined") {
+        qrError.textContent = "ابزار ساخت تصویر یا QR بارگذاری نشد. اتصال اینترنت را بررسی کنید.";
+        return;
     }
 
-    const url = document.getElementById("image-url").value.trim();
+    if (!A_K || A_K.includes("PASTE_")) {
+        qrError.textContent = "ابتدا API Key سرویس ImgBB را در فایل script.js وارد کنید.";
+        return;
+    }
+
+    const button = qrForm.querySelector('button[type="submit"]');
+    button.disabled = true;
+    button.textContent = "در حال آپلود تصویر…";
+
+    const table = document.getElementById("shift-table");
+    table.classList.add("exporting");
 
     try {
-    const parsedUrl = new URL(url);
-    if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
-        throw new Error("Invalid URL protocol");
-    }
+        const canvas = await html2canvas(table, {
+            backgroundColor: "#ffffff",
+            scale: 2,
+            width: table.scrollWidth,
+            windowWidth: Math.max(document.documentElement.clientWidth, table.scrollWidth)
+        });
 
-    await QRCode.toCanvas(qrCanvas, url, {
-        width: 280,
-        margin: 2,
-        errorCorrectionLevel: "M"
-    });
+        const blob = await new Promise(resolve =>
+            canvas.toBlob(resolve, "image/png")
+        );
 
-    qrResult.style.display = "block";
+        if (!blob) throw new Error("Could not create image");
+
+        const formData = new FormData();
+        formData.append("image", blob, "shift-schedule.png");
+
+        const response = await fetch(
+            `https://api.imgbb.com/1/upload?key=${encodeURIComponent(A_K)}`,
+            { method: "POST", body: formData }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success || !result.data?.url) {
+            throw new Error("Image upload failed");
+        }
+
+        await QRCode.toCanvas(qrCanvas, result.data.url, {
+            width: 280,
+            margin: 2,
+            errorCorrectionLevel: "M"
+        });
+
+        qrResult.style.display = "block";
     } catch (error) {
-    qrError.textContent = "نشانی معتبر تصویر را وارد کنید.";
+        console.error(error);
+        qrError.textContent = "آپلود تصویر یا ساخت QR انجام نشد. لطفاً دوباره تلاش کنید.";
+    } finally {
+        table.classList.remove("exporting");
+        button.disabled = false;
+        button.textContent = "ساخت QR Code";
     }
 });
+
 
 document.getElementById("download-qr-button").addEventListener("click", () => {
     const link = document.createElement("a");
