@@ -263,13 +263,18 @@ qrForm.addEventListener("submit", async event => {
             throw new Error("Image upload failed");
         }
 
-        await QRCode.toCanvas(qrCanvas, result.data.url, {
+        qrCanvas.replaceChildren();
+
+        new QRCode(qrCanvas, {
+            text: result.data.url,
             width: 280,
-            margin: 2,
-            errorCorrectionLevel: "M"
+            height: 280,
+            correctLevel: QRCode.CorrectLevel.M
         });
 
         qrResult.style.display = "block";
+
+
     } catch (error) {
         console.error(error);
         qrError.textContent = "آپلود تصویر یا ساخت QR انجام نشد. لطفاً دوباره تلاش کنید.";
@@ -282,9 +287,17 @@ qrForm.addEventListener("submit", async event => {
 
 
 document.getElementById("download-qr-button").addEventListener("click", () => {
+    const generatedCanvas = qrCanvas.querySelector("canvas");
+    const generatedImage = qrCanvas.querySelector("img");
+    const dataUrl = generatedCanvas
+        ? generatedCanvas.toDataURL("image/png")
+        : generatedImage?.src;
+
+    if (!dataUrl) return;
+
     const link = document.createElement("a");
     link.download = "QR-جدول-شیفت‌ها.png";
-    link.href = qrCanvas.toDataURL("image/png");
+    link.href = dataUrl;
     link.click();
 });
 
