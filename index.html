@@ -37,30 +37,11 @@
     <div class="table-wrap" id="table-wrap">
       <table id="shift-table"></table>
     </div>
-
-    <p class="note">اطلاعات در همین مرورگر ذخیره می‌شود. برای استفاده از QR Code، ابتدا تصویر را در دسترس عموم قرار دهید و نشانی آن را وارد کنید.</p>
+    
+    <p class="note">اطلاعات در همین مرورگر ذخیره می‌شود.</p>
   </main>
 
-  <dialog id="qr-dialog">
-    <h2>ساخت QR Code برای تصویر</h2>
-    <p>تصویر جدول آپلود می‌شود و QR Code آن ساخته خواهد شد.</p>
-
-    <form id="qr-form">
-        <div class="dialog-actions">
-        <button type="submit">ساخت QR Code</button>
-        <button type="button" class="secondary" id="close-qr-button">بستن</button>
-        </div>
-    </form>
-
-    <div id="qr-error" role="status"></div>
-    <div id="qr-result">
-      <canvas id="qr-canvas"></canvas>
-      <button type="button" class="export" id="download-qr-button">دانلود تصویر QR</button>
-    </div>
-  </dialog>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="script.js"></script>
 
 </body>

@@ -51,7 +51,6 @@ button:hover { filter: brightness(.95); }
 button:disabled { opacity: .65; cursor: wait; }
 
 .export { background: #0f766e; }
-.qr-button { background: #7c3aed; }
 .remove { background: #fee2e2; color: #b91c1c; padding: 7px 10px; }
 
 /* Hide staff-removal buttons only while the table is being exported. */
@@ -139,15 +138,6 @@ dialog p { color: #64748b; line-height: 1.8; margin: 0 0 14px; }
 #image-url { width: 100%; border: 1px solid #cbd5e1; direction: ltr; }
 .dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .secondary { background: #64748b; }
-#qr-result { display: none; text-align: center; margin-top: 18px; }
-#qr-canvas {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto 10px;
-    border: 8px solid white;
-}
-#qr-error { color: #b91c1c; min-height: 1.5em; margin-top: 8px; }
 
 @media (max-width: 600px) {
     body { padding: 18px 10px; }
